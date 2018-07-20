@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project>
+
+    <property name="source-project.dir" value="${user.home}/katalon-workspace/CURA-Test-Project" />
+    <property name="target-project.dir" value="${user.home}/katalon-workspace/CURA-Test-Project_Copy" />
+    <property name="output.dir" value="${target-project.dir}/Object Repository" />
+
+    <property name="xslt.dir" value="./src/main/xslt"/>
+
+    <target name="copyProject">
+        <copy todir="${target-project.dir}">
+            <fileset dir="${source-project.dir}"/>
+        </copy>
+    </target>
+
+    <target name="go">
+        <delete dir="${output.dir}" failOnError="no"/>
+        <mkdir dir="${output.dir}" />
+        <echo message="start transforming test objects" />
+        <xslt style="${xslt.dir}/filterTestObjectWebElementProperties.xsl"
+            basedir="${source-project.dir}/Object Repository"
+            includes="**/*.rs"
+            destdir="${output.dir}/">
+            <mapper type="identity"/>
+        </xslt>
+    </target>
+
     <target name="hello">
         <echo>Hello, from Ant</echo>
     </target>
+
 </project>
